@@ -39,7 +39,9 @@
     --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
 }
 
-* {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -47,6 +49,8 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
@@ -55,6 +59,9 @@ body {
     background-color: var(--bg-light);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
+    padding: 100px 0;
+    /* Vertical padding only, after navbar */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -99,7 +106,6 @@ nav {
 
 .logo {
     height: 60px;
-    /* Force a fixed height for the link container */
     display: flex;
     align-items: center;
 }
@@ -116,6 +122,18 @@ nav {
     align-items: center;
 }
 
+/* Hamburger Menu Toggle */
+.menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-main);
+    padding: 0.5rem;
+    z-index: 2001;
+    /* Higher than nav-links */
+}
+
 .nav-links a:hover {
     color: var(--accent-color);
 }
@@ -126,6 +144,7 @@ nav {
     background-size: cover;
     background-position: center;
     position: relative;
+    width: 100%;
 }
 
 .hero::before {
@@ -215,13 +234,15 @@ nav {
 .container {
     max-width: 1300px;
     margin: 4rem auto;
-    padding: 10vh;
+    padding: 0 2rem;
+    width: 100%;
 }
 
 /* Featured Deals Slider */
 .slider-container {
     position: relative;
     margin: 2rem 0;
+    width: 100%;
 }
 
 .slider {
@@ -231,12 +252,10 @@ nav {
     scroll-snap-type: x mandatory;
     padding: 1rem 0.5rem 2rem;
     scrollbar-width: none;
-    /* Firefox */
 }
 
 .slider::-webkit-scrollbar {
     display: none;
-    /* Chrome/Safari */
 }
 
 .slider-item {
@@ -248,6 +267,7 @@ nav {
 /* Category Sections */
 .category-section {
     margin-bottom: 6rem;
+    width: 100%;
 }
 
 .category-header {
@@ -268,6 +288,7 @@ nav {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2.5rem;
+    width: 100%;
 }
 
 .product-card {
@@ -295,10 +316,6 @@ nav {
     height: 100%;
     object-fit: cover;
     transition: var(--transition);
-}
-
-.product-card:hover .product-img-wrapper img {
-    transform: scale(1.05);
 }
 
 .product-badge {
@@ -347,11 +364,11 @@ nav {
 /* Testimonials */
 .testimonials {
     background: #0f172a;
-    /* Reverted to Slate 900 always */
     color: white !important;
     padding: 8rem 2rem;
     text-align: center;
     border-top: none;
+    width: 100%;
 }
 
 .testimonials .category-header h2 {
@@ -364,9 +381,10 @@ nav {
 
 .testimonial-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 3rem;
     margin-top: 4rem;
+    width: 100%;
 }
 
 .testimonial-card {
@@ -396,11 +414,13 @@ footer {
     color: var(--bg-light);
     text-align: center;
     transition: var(--transition);
+    width: 100%;
 }
 
 footer p {
     opacity: 0.8;
     margin-bottom: 2rem;
+    padding: 0 1rem;
 }
 
 .footer-links {
@@ -408,37 +428,18 @@ footer p {
     justify-content: center;
     gap: 3rem;
     margin-bottom: 3rem;
-}
-
-.footer-links a {
-    color: var(--bg-light);
-    opacity: 0.8;
-}
-
-.footer-links a:hover {
-    color: var(--accent-color);
-    opacity: 1;
+    flex-wrap: wrap;
 }
 
 /* Call to Action Section (Visit Our Store) */
 .cta-section {
     background: #0f172a;
-    /* Consistent dark background */
     color: white;
     padding: 4rem;
     border-radius: var(--radius-xl);
     text-align: center;
     transition: var(--transition);
-}
-
-.cta-section h2 {
-    color: white !important;
-    margin-bottom: 1rem;
-}
-
-.cta-section p {
-    color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 2rem;
+    width: 100%;
 }
 
 /* Map Section */
@@ -465,19 +466,98 @@ footer p {
 }
 
 @media (max-width: 768px) {
+    nav {
+        padding: 1rem;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
     .nav-links {
-        display: none;
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        height: 100vh;
+        background: var(--bg-light);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /* Center horizontally */
+        gap: 1.5rem;
+        transition: 0.3s ease-in-out;
+        box-shadow: -10px 0 20px rgba(0, 0, 0, 0.1);
+        z-index: 2000;
+        padding: 2rem;
+        display: flex;
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-links li {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nav-links a {
+        font-size: 1.2rem;
+        display: block;
+        padding: 1rem;
+    }
+
+    .logo {
+        height: 50px;
+        max-width: 200px;
     }
 
     .hero-content h1 {
-        font-size: 3rem;
+        font-size: 2.2rem;
     }
 
     .slider-item {
-        flex: 0 0 calc(100% - 1rem);
+        flex: 0 0 100%;
+        min-width: 0 !important;
     }
 
     .contact-info {
+        display: grid;
         grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .product-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .testimonial-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .testimonial-card {
+        padding: 1.5rem;
+        width: 100%;
+    }
+
+    .testimonials {
+        padding: 4rem 0.5rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+        margin: 2rem auto;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
     }
 }
